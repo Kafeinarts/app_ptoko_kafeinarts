@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Master;
 use App\Models\Customer;
 use App\Models\CustomerGroup;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class CustomerController extends SimpleCrudController
@@ -29,9 +28,9 @@ class CustomerController extends SimpleCrudController
         'loyalty_points' => 'Poin',
     ];
 
-    public function index(Request $request)
+    protected function formFields(): array
     {
-        $this->fields = [
+        return [
             ['name' => 'name', 'label' => 'Nama Pelanggan', 'type' => 'text', 'required' => true],
             ['name' => 'phone', 'label' => 'No. HP', 'type' => 'text', 'required' => true],
             ['name' => 'email', 'label' => 'Email', 'type' => 'email'],
@@ -41,8 +40,6 @@ class CustomerController extends SimpleCrudController
             ],
             ['name' => 'loyalty_points', 'label' => 'Poin Loyalitas', 'type' => 'number', 'default' => 0],
         ];
-
-        return parent::index($request)->with('groups', CustomerGroup::query()->orderBy('name')->get());
     }
 
     protected function rules(?Model $record = null): array

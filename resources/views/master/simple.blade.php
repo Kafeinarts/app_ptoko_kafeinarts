@@ -15,9 +15,9 @@
     <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#import-modal">
         <i class="bi bi-upload me-1"></i>Import
     </button>
-    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#create-record">
+    <a href="{{ route($routePrefix.'.insert') }}" class="btn btn-sm btn-success">
         <i class="bi bi-plus-lg me-1"></i>Tambah {{ $singular }}
-    </button>
+    </a>
 @endsection
 
 @section('content')
@@ -85,8 +85,6 @@
     </div>
     <div class="card-footer bg-white">{{ $records->links() }}</div>
 </div>
-
-@include('master._form-modal', ['id' => 'create-record', 'action' => route($routePrefix.'.store'), 'method' => 'POST', 'record' => null, 'title' => 'Tambah '.$singular])
 
 @foreach($records as $record)
     @include('master._form-modal', ['id' => 'edit-'.$record->id, 'action' => route($routePrefix.'.update', $record->id), 'method' => 'PUT', 'record' => $record, 'title' => 'Edit '.$singular])

@@ -15,7 +15,9 @@
     <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#import-modifier">
         <i class="bi bi-upload me-1"></i>Import
     </button>
-    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#create-group"><i class="bi bi-plus-lg me-1"></i>Tambah Grup</button>
+    <a href="{{ route('master.modifiers.insert') }}" class="btn btn-sm btn-success">
+        <i class="bi bi-plus-lg me-1"></i>Tambah Grup
+    </a>
 @endsection
 
 @section('content')
@@ -70,53 +72,6 @@
     @empty
         <div class="col-12"><div class="card"><div class="empty-state"><i class="bi bi-sliders"></i>Belum ada grup modifier. Tambahkan grup pertama Anda.</div></div></div>
     @endforelse
-</div>
-
-<div class="modal fade" id="create-group" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <form method="POST" action="{{ route('master.modifiers.groups.store') }}" class="modal-content border-0">
-            @csrf
-            <div class="modal-header">
-                <h5 class="modal-title">Tambah Grup Modifier</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Nama Grup <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" required maxlength="100" placeholder="Contoh: Level Gula">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Min</label>
-                        <input type="number" name="min_selection" class="form-control" min="0" value="0">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Maks</label>
-                        <input type="number" name="max_selection" class="form-control" min="1" value="1">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Wajib</label>
-                        <div class="form-check form-switch mt-2">
-                            <input class="form-check-input" type="checkbox" role="switch" name="is_required" value="1">
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label">Produk Terkait</label>
-                        <select name="product_ids[]" class="form-select" multiple size="8">
-                            @foreach($products as $product)
-                                <option value="{{ $product->id }}">{{ $product->name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="form-text">Tahan Ctrl / Cmd untuk memilih lebih dari satu produk.</div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                <button class="btn btn-success"><i class="bi bi-check2 me-1"></i>Simpan</button>
-            </div>
-        </form>
-    </div>
 </div>
 
 <div class="modal fade" id="import-modifier" tabindex="-1" aria-hidden="true">

@@ -30,6 +30,11 @@ abstract class SimpleCrudController extends Controller
 
     protected array $searchable = ['name'];
 
+    protected function formFields(): array
+    {
+        return $this->fields;
+    }
+
     protected function rules(?Model $record = null): array
     {
         return ['name' => ['required', 'string', 'max:100', Rule::unique((new $this->model)->getTable(), 'name')->ignore($record?->id)]];
@@ -57,7 +62,18 @@ abstract class SimpleCrudController extends Controller
             'routePrefix' => $this->routePrefix,
             'icon' => $this->icon,
             'columns' => $this->columns,
-            'fields' => $this->fields,
+            'fields' => $this->formFields(),
+        ]);
+    }
+
+    public function create()
+    {
+        return view('master.insert', [
+            'title' => $this->title,
+            'singular' => $this->singular,
+            'routePrefix' => $this->routePrefix,
+            'icon' => $this->icon,
+            'fields' => $this->formFields(),
         ]);
     }
 
@@ -69,7 +85,8 @@ abstract class SimpleCrudController extends Controller
             $this->beforeSave($data);
             $this->model::query()->create($data);
 
-            return back()->with('swal_success', $this->singular.' berhasil ditambahkan.');
+            return redirect()->route($this->routePrefix.'.index')
+                ->with('swal_success', $this->singular.' berhasil ditambahkan.');
         } catch (Throwable $e) {
             return back()->withInput()->with('swal_error', $e->getMessage());
         }

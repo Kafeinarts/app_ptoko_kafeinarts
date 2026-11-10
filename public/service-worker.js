@@ -1,10 +1,10 @@
-const CACHE = 'kafeinarts-v1.4.0';
+const CACHE = 'kafeinarts-v1.6.0';
 const ASSETS = [
   '/',
   '/offline.html',
   '/manifest.webmanifest',
-  '/assets/css/app.css?v=1.4.0',
-  '/assets/js/app.js?v=1.4.0',
+  '/assets/css/app.css?v=1.5.0',
+  '/assets/js/app.js?v=1.6.0',
   '/assets/vendor/adminlte.min.css',
   '/assets/vendor/adminlte.min.js',
   '/assets/vendor/bootstrap.bundle.min.js',

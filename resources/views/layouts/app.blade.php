@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/sweetalert2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=1.4.0">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=1.5.0">
     @stack('styles')
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -250,7 +250,7 @@
     </main>
 
     <footer class="app-footer">
-        <div class="float-end d-none d-sm-inline">v1.4.0</div>
+        <div class="float-end d-none d-sm-inline">v1.6.0</div>
         <strong>Kafeinarts POS</strong> · Point of Sale & Inventory
     </footer>
 </div>
@@ -278,7 +278,7 @@
 <script src="{{ asset('assets/vendor/adminlte.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/chart.umd.min.js') }}"></script>
-<script src="{{ asset('assets/js/app.js') }}?v=1.4.0"></script>
+<script src="{{ asset('assets/js/app.js') }}?v=1.6.0"></script>
 @stack('scripts')
 </body>
 </html>

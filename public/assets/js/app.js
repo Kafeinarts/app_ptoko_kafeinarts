@@ -528,6 +528,13 @@
             if (!fresh || !current) { window.location.href = url; return; }
             current.innerHTML = fresh.innerHTML;
             current.dataset.page = fresh.dataset.page;
+
+            const freshHeader = doc.querySelector('.app-content-header');
+            const currentHeader = document.querySelector('.app-content-header');
+            if (freshHeader && currentHeader) {
+                currentHeader.innerHTML = freshHeader.innerHTML;
+            }
+
             document.title = doc.title;
             if (push) history.pushState({ spa: true }, '', url);
             updateActiveNav(url);
@@ -545,6 +552,7 @@
         let best = null;
         document.querySelectorAll('.app-sidebar a.nav-link[href]').forEach((link) => {
             try {
+                if (link.getAttribute('href')?.startsWith('#')) return;
                 const linkPath = new URL(link.href, window.location.origin).pathname.replace(/\/$/, '') || '/';
                 if (linkPath !== '/' && path.startsWith(linkPath)) {
                     if (!best || linkPath.length > new URL(best.href).pathname.length) best = link;

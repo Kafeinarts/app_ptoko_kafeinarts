@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Master;
 
 use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 
 class SupplierController extends SimpleCrudController
 {
@@ -27,16 +26,14 @@ class SupplierController extends SimpleCrudController
         'address' => 'Alamat',
     ];
 
-    public function index(Request $request)
+    protected function formFields(): array
     {
-        $this->fields = [
+        return [
             ['name' => 'name', 'label' => 'Nama Supplier', 'type' => 'text', 'required' => true],
             ['name' => 'phone', 'label' => 'Telepon', 'type' => 'text', 'required' => true],
             ['name' => 'email', 'label' => 'Email', 'type' => 'email'],
             ['name' => 'address', 'label' => 'Alamat', 'type' => 'textarea'],
         ];
-
-        return parent::index($request);
     }
 
     protected function rules(?Model $record = null): array

@@ -24,8 +24,21 @@ class ModifierController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        return view('master.modifiers-insert', [
+            'products' => Product::query()->with('variants')->where('is_active', true)->orderBy('name')->get(),
+        ]);
+    }
+
     public function storeGroup(Request $request)
     {
+        // Buang baris modifier yang kosong agar tidak menggagalkan validasi.
+        $items = collect($request->input('items', []))
+            ->filter(fn ($item) => filled($item['name'] ?? null))
+            ->values();
+        $request->merge(['items' => $items->all()]);
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'is_required' => ['nullable', 'boolean'],
@@ -33,6 +46,10 @@ class ModifierController extends Controller
             'max_selection' => ['nullable', 'integer', 'min:1'],
             'product_ids' => ['nullable', 'array'],
             'product_ids.*' => ['exists:products,id'],
+            'items' => ['nullable', 'array'],
+            'items.*.name' => ['required', 'string', 'max:100'],
+            'items.*.price' => ['required', 'numeric', 'min:0'],
+            'items.*.is_available' => ['nullable', 'boolean'],
         ]);
 
         try {
@@ -44,7 +61,16 @@ class ModifierController extends Controller
             ]);
             $group->products()->sync($data['product_ids'] ?? []);
 
-            return back()->with('swal_success', 'Grup modifier berhasil ditambahkan.');
+            foreach ($data['items'] ?? [] as $item) {
+                $group->modifiers()->create([
+                    'name' => trim((string) $item['name']),
+                    'price' => (float) $item['price'],
+                    'is_available' => isset($item['is_available']) ? (bool) $item['is_available'] : false,
+                ]);
+            }
+
+            return redirect()->route('master.modifiers.index')
+                ->with('swal_success', 'Grup modifier berhasil ditambahkan.');
         } catch (Throwable $e) {
             return back()->with('swal_error', $e->getMessage());
         }

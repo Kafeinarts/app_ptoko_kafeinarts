@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.categories')->group(function () {
+            Route::get('categories/insert', [CategoryController::class, 'create'])->name('categories.insert');
             Route::get('categories/export', [CategoryController::class, 'export'])->name('categories.export');
             Route::get('categories/template', [CategoryController::class, 'template'])->name('categories.template');
             Route::post('categories/import', [CategoryController::class, 'import'])->name('categories.import');
@@ -83,6 +84,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.brands')->group(function () {
+            Route::get('brands/insert', [BrandController::class, 'create'])->name('brands.insert');
             Route::get('brands/export', [BrandController::class, 'export'])->name('brands.export');
             Route::get('brands/template', [BrandController::class, 'template'])->name('brands.template');
             Route::post('brands/import', [BrandController::class, 'import'])->name('brands.import');
@@ -93,6 +95,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.units')->group(function () {
+            Route::get('units/insert', [UnitController::class, 'create'])->name('units.insert');
             Route::get('units/export', [UnitController::class, 'export'])->name('units.export');
             Route::get('units/template', [UnitController::class, 'template'])->name('units.template');
             Route::post('units/import', [UnitController::class, 'import'])->name('units.import');
@@ -103,6 +106,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.customers')->group(function () {
+            Route::get('customers/insert', [CustomerController::class, 'create'])->name('customers.insert');
             Route::get('customers/export', [CustomerController::class, 'export'])->name('customers.export');
             Route::get('customers/template', [CustomerController::class, 'template'])->name('customers.template');
             Route::post('customers/import', [CustomerController::class, 'import'])->name('customers.import');
@@ -113,6 +117,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.suppliers')->group(function () {
+            Route::get('suppliers/insert', [SupplierController::class, 'create'])->name('suppliers.insert');
             Route::get('suppliers/export', [SupplierController::class, 'export'])->name('suppliers.export');
             Route::get('suppliers/template', [SupplierController::class, 'template'])->name('suppliers.template');
             Route::post('suppliers/import', [SupplierController::class, 'import'])->name('suppliers.import');
@@ -123,6 +128,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.modifiers')->group(function () {
+            Route::get('modifiers/insert', [ModifierController::class, 'create'])->name('modifiers.insert');
             Route::get('modifiers/export', [ModifierController::class, 'export'])->name('modifiers.export');
             Route::get('modifiers/template', [ModifierController::class, 'template'])->name('modifiers.template');
             Route::post('modifiers/import', [ModifierController::class, 'import'])->name('modifiers.import');
