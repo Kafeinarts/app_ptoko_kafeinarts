@@ -32,7 +32,7 @@
                     <td class="text-end"><a href="{{ route('inventory.opnames.show', $opname) }}" class="btn btn-sm btn-outline-success"><i class="bi bi-eye me-1"></i>Detail</a></td>
                 </tr>
             @empty
-                <tr><td colspan="6"><div class="empty-state"><i class="bi bi-clipboard-check"></i>Belum ada stock opname.</div></td></tr>
+                <tr><td colspan="6"><x-empty-state icon="bi bi-clipboard-check" message="Belum ada stock opname." /></td></tr>
             @endforelse
             </tbody>
         </table>

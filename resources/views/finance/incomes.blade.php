@@ -15,11 +15,7 @@
 @section('content')
 <div class="row g-3 mb-3">
     <div class="col-md-4">
-        <div class="stat-card">
-            <div class="stat-label">Total Pemasukan</div>
-            <div class="stat-value text-success">{{ \App\Helpers\CurrencyHelper::format($total) }}</div>
-            <div class="stat-hint">{{ \Carbon\Carbon::parse($from)->format('d/m/Y') }} — {{ \Carbon\Carbon::parse($to)->format('d/m/Y') }}</div>
-        </div>
+        <x-stat-card label="Total Pemasukan" :value="\App\Helpers\CurrencyHelper::format($total)" :hint="\Carbon\Carbon::parse($from)->format('d/m/Y').' — '.\Carbon\Carbon::parse($to)->format('d/m/Y')" valueClass="text-success" />
     </div>
     <div class="col-md-8">
         <form method="GET" class="card h-100" data-spa-form>
@@ -67,7 +63,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="6"><div class="empty-state"><i class="bi bi-arrow-down-circle"></i>Belum ada pemasukan pada periode ini.</div></td></tr>
+                <tr><td colspan="6"><x-empty-state icon="bi bi-arrow-down-circle" message="Belum ada pemasukan pada periode ini." /></td></tr>
             @endforelse
             </tbody>
         </table>

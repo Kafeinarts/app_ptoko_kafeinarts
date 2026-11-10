@@ -100,7 +100,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="8"><div class="empty-state"><i class="bi bi-receipt"></i>Belum ada transaksi sesuai filter.</div></td></tr>
+                <tr><td colspan="8"><x-empty-state icon="bi bi-receipt" message="Belum ada transaksi sesuai filter." /></td></tr>
             @endforelse
             </tbody>
         </table>

@@ -123,7 +123,7 @@
                         ]) }}"></canvas>
                     </div>
                 @else
-                    <div class="empty-state py-4"><i class="bi bi-pie-chart"></i>Belum ada biaya tercatat.</div>
+                    <x-empty-state icon="bi bi-pie-chart" message="Belum ada biaya tercatat." class="py-4" />
                 @endif
             </div>
         </div>

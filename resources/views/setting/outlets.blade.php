@@ -50,7 +50,7 @@
         </div>
     @empty
         <div class="col-12">
-            <div class="card"><div class="card-body"><div class="empty-state"><i class="bi bi-shop"></i>Belum ada outlet terdaftar.</div></div></div>
+            <div class="card"><div class="card-body"><x-empty-state icon="bi bi-shop" message="Belum ada outlet terdaftar." /></div></div>
         </div>
     @endforelse
 </div>

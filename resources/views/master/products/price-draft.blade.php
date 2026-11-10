@@ -57,7 +57,7 @@
                     </tr>
                 @endforeach
             @empty
-                <tr><td colspan="8"><div class="empty-state"><i class="bi bi-tags"></i>Belum ada produk.</div></td></tr>
+                <tr><td colspan="8"><x-empty-state icon="bi bi-tags" message="Belum ada produk." /></td></tr>
             @endforelse
             </tbody>
         </table>

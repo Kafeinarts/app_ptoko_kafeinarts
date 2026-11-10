@@ -70,7 +70,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="7"><div class="empty-state"><i class="bi bi-journal-text"></i>Belum ada aktivitas tercatat.</div></td></tr>
+                <tr><td colspan="7"><x-empty-state icon="bi bi-journal-text" message="Belum ada aktivitas tercatat." /></td></tr>
             @endforelse
             </tbody>
         </table>

@@ -60,7 +60,7 @@
                     <td class="text-end"><a href="{{ route('purchasing.show', $order) }}" class="btn btn-sm btn-outline-success"><i class="bi bi-eye me-1"></i>Detail</a></td>
                 </tr>
             @empty
-                <tr><td colspan="8"><div class="empty-state"><i class="bi bi-cart-plus"></i>Belum ada purchase order.</div></td></tr>
+                <tr><td colspan="8"><x-empty-state icon="bi bi-cart-plus" message="Belum ada purchase order." /></td></tr>
             @endforelse
             </tbody>
         </table>

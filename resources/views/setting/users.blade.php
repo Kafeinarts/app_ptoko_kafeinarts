@@ -67,7 +67,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="7"><div class="empty-state"><i class="bi bi-people"></i>Belum ada pengguna terdaftar.</div></td></tr>
+                <tr><td colspan="7"><x-empty-state icon="bi bi-people" message="Belum ada pengguna terdaftar." /></td></tr>
             @endforelse
             </tbody>
         </table>

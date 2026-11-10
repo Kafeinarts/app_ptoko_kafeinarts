@@ -45,7 +45,7 @@
                         <td class="text-center"><span class="badge badge-soft-secondary" data-diff>0</span></td>
                     </tr>
                 @empty
-                    <tr><td colspan="5"><div class="empty-state"><i class="bi bi-box-seam"></i>Belum ada stok untuk diopname.</div></td></tr>
+                    <tr><td colspan="5"><x-empty-state icon="bi bi-box-seam" message="Belum ada stok untuk diopname." /></td></tr>
                 @endforelse
                 </tbody>
             </table>

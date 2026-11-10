@@ -89,7 +89,7 @@
                     </button>
                 @endif
             @empty
-                <div class="empty-state w-100"><i class="bi bi-cup-hot"></i>Belum ada produk aktif. Tambahkan produk terlebih dahulu.</div>
+                <x-empty-state icon="bi bi-cup-hot" message="Belum ada produk aktif. Tambahkan produk terlebih dahulu." class="w-100" />
             @endforelse
         </div>
     </div>

@@ -56,7 +56,7 @@
                             </form>
                         </div>
                     @empty
-                        <div class="empty-state py-3"><i class="bi bi-sliders"></i>Belum ada item modifier.</div>
+                        <x-empty-state icon="bi bi-sliders" message="Belum ada item modifier." class="py-3" />
                     @endforelse
                 </div>
                 <div class="card-footer bg-white">
@@ -70,7 +70,7 @@
             </div>
         </div>
     @empty
-        <div class="col-12"><div class="card"><div class="empty-state"><i class="bi bi-sliders"></i>Belum ada grup modifier. Tambahkan grup pertama Anda.</div></div></div>
+        <div class="col-12"><div class="card"><x-empty-state icon="bi bi-sliders" message="Belum ada grup modifier. Tambahkan grup pertama Anda." /></div></div>
     @endforelse
 </div>
 

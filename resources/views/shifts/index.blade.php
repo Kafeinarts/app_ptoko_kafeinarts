@@ -125,7 +125,7 @@
                             <span class="badge badge-soft-{{ $log->type === 'CASH_IN' ? 'success' : 'danger' }}">{{ $log->type }}</span>
                         </div>
                     @empty
-                        <div class="empty-state py-4"><i class="bi bi-cash-stack"></i>Belum ada arus kas.</div>
+                        <x-empty-state icon="bi bi-cash-stack" message="Belum ada arus kas." class="py-4" />
                     @endforelse
                 </div>
             </div>
@@ -150,7 +150,7 @@
                         <td><span class="badge badge-soft-{{ $trx->status === 'PAID' ? 'success' : 'warning' }}">{{ $trx->status }}</span></td>
                     </tr>
                 @empty
-                    <tr><td colspan="5"><div class="empty-state py-3"><i class="bi bi-receipt"></i>Belum ada transaksi pada shift ini.</div></td></tr>
+                    <tr><td colspan="5"><x-empty-state icon="bi bi-receipt" message="Belum ada transaksi pada shift ini." class="py-3" /></td></tr>
                 @endforelse
                 </tbody>
             </table>
@@ -184,11 +184,10 @@
         <div class="col-lg-7">
             <div class="card h-100">
                 <div class="card-body d-flex flex-column justify-content-center">
-                    <div class="empty-state py-4">
-                        <i class="bi bi-clock-history"></i>
+                    <x-empty-state icon="bi bi-clock-history" class="py-4">
                         <div class="fw-semibold">Belum ada shift aktif</div>
                         <div class="small">Buka shift terlebih dahulu. Semua transaksi akan tercatat pada shift yang sedang aktif.</div>
-                    </div>
+                    </x-empty-state>
                 </div>
             </div>
         </div>
@@ -230,7 +229,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="10"><div class="empty-state"><i class="bi bi-clock-history"></i>Belum ada riwayat shift.</div></td></tr>
+                <tr><td colspan="10"><x-empty-state icon="bi bi-clock-history" message="Belum ada riwayat shift." /></td></tr>
             @endforelse
             </tbody>
         </table>

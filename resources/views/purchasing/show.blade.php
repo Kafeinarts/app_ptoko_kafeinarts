@@ -54,11 +54,7 @@
         </div>
     </div>
     <div class="col-lg-4">
-        <div class="stat-card h-100">
-            <div class="stat-label">Total Pembelian</div>
-            <div class="stat-value">{{ \App\Helpers\CurrencyHelper::format($order->total_amount) }}</div>
-            <div class="stat-hint">{{ $order->items->count() }} item · {{ $order->items->sum('qty_ordered') }} unit</div>
-        </div>
+        <x-stat-card label="Total Pembelian" :value="\App\Helpers\CurrencyHelper::format($order->total_amount)" :hint="$order->items->count().' item · '.$order->items->sum('qty_ordered').' unit'" />
     </div>
 </div>
 

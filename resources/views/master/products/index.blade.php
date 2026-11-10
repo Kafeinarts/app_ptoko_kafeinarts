@@ -91,7 +91,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="7"><div class="empty-state"><i class="bi bi-cup-hot"></i>Belum ada produk. Tambahkan produk pertama Anda.</div></td></tr>
+                <tr><td colspan="7"><x-empty-state icon="bi bi-cup-hot" message="Belum ada produk. Tambahkan produk pertama Anda." /></td></tr>
             @endforelse
             </tbody>
         </table>

@@ -55,7 +55,7 @@ abstract class SimpleCrudController extends Controller
 
         $records = $query->latest()->paginate(15)->withQueryString();
 
-        return view('master.simple', [
+        return view('crud.index', [
             'records' => $records,
             'title' => $this->title,
             'singular' => $this->singular,
@@ -68,7 +68,7 @@ abstract class SimpleCrudController extends Controller
 
     public function create()
     {
-        return view('master.insert', [
+        return view('crud.insert', [
             'title' => $this->title,
             'singular' => $this->singular,
             'routePrefix' => $this->routePrefix,

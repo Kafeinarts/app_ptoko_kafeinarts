@@ -71,7 +71,7 @@
         </div>
     @empty
         <div class="col-12">
-            <div class="card"><div class="card-body"><div class="empty-state"><i class="bi bi-shield-lock"></i>Belum ada role terdaftar.</div></div></div>
+            <div class="card"><div class="card-body"><x-empty-state icon="bi bi-shield-lock" message="Belum ada role terdaftar." /></div></div>
         </div>
     @endforelse
 </div>

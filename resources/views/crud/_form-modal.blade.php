@@ -10,7 +10,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                @include('master._fields', ['id' => $id, 'record' => $record, 'fields' => $fields])
+                @include('crud._fields', ['id' => $id, 'record' => $record, 'fields' => $fields])
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>

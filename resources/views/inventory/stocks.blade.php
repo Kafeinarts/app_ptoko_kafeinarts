@@ -82,7 +82,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5"><div class="empty-state"><i class="bi bi-box-seam"></i>Belum ada data stok.</div></td></tr>
+                        <tr><td colspan="5"><x-empty-state icon="bi bi-box-seam" message="Belum ada data stok." /></td></tr>
                     @endforelse
                     </tbody>
                 </table>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="empty-state py-4"><i class="bi bi-arrow-left-right"></i>Belum ada mutasi stok.</div>
+                    <x-empty-state icon="bi bi-arrow-left-right" message="Belum ada mutasi stok." class="py-4" />
                 @endforelse
             </div>
         </div>

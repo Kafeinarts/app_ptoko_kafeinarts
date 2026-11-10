@@ -13,32 +13,16 @@
 @section('content')
 <div class="row g-3 mb-3">
     <div class="col-6 col-lg-3">
-        <div class="stat-card">
-            <div class="stat-label">Total Item</div>
-            <div class="stat-value">{{ $opname->details->count() }}</div>
-            <div class="stat-hint">Varian dihitung</div>
-        </div>
+        <x-stat-card label="Total Item" :value="$opname->details->count()" hint="Varian dihitung" />
     </div>
     <div class="col-6 col-lg-3">
-        <div class="stat-card">
-            <div class="stat-label">Selisih Unit</div>
-            <div class="stat-value">{{ $opname->details->sum('difference_qty') }}</div>
-            <div class="stat-hint">Fisik − sistem</div>
-        </div>
+        <x-stat-card label="Selisih Unit" :value="$opname->details->sum('difference_qty')" hint="Fisik − sistem" />
     </div>
     <div class="col-6 col-lg-3">
-        <div class="stat-card">
-            <div class="stat-label">Nilai Selisih</div>
-            <div class="stat-value">{{ \App\Helpers\CurrencyHelper::format($opname->details->sum('difference_value')) }}</div>
-            <div class="stat-hint">Berdasarkan harga modal</div>
-        </div>
+        <x-stat-card label="Nilai Selisih" :value="\App\Helpers\CurrencyHelper::format($opname->details->sum('difference_value'))" hint="Berdasarkan harga modal" />
     </div>
     <div class="col-6 col-lg-3">
-        <div class="stat-card">
-            <div class="stat-label">Petugas</div>
-            <div class="stat-value" style="font-size:1.1rem">{{ $opname->user?->name ?? '-' }}</div>
-            <div class="stat-hint">{{ $opname->outlet?->name }}</div>
-        </div>
+        <x-stat-card label="Petugas" :value="$opname->user?->name ?? '-'" :hint="$opname->outlet?->name" />
     </div>
 </div>
 

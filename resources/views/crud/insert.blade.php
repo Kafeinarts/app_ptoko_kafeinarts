@@ -3,7 +3,7 @@
 @section('title', 'Tambah '.$singular)
 @section('page-title', 'Tambah '.$singular)
 @section('page-subtitle', 'Isi formulir di bawah ini lalu klik Simpan — data langsung masuk ke sistem.')
-@section('page-key', 'master-insert')
+@section('page-key', 'crud-insert')
 
 @section('page-actions')
     <a href="{{ route($routePrefix.'.index') }}" class="btn btn-sm btn-outline-secondary">
@@ -27,7 +27,7 @@
             <form method="POST" action="{{ route($routePrefix.'.store') }}">
                 @csrf
                 <div class="card-body">
-                    @include('master._fields', ['id' => 'insert', 'record' => null, 'fields' => $fields])
+                    @include('crud._fields', ['id' => 'insert', 'record' => null, 'fields' => $fields])
                 </div>
                 <div class="card-footer bg-white d-flex flex-wrap gap-2 justify-content-end">
                     <a href="{{ route($routePrefix.'.index') }}" class="btn btn-light">

@@ -51,7 +51,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="8"><div class="empty-state"><i class="bi bi-ticket-perforated"></i>Belum ada voucher.</div></td></tr>
+                <tr><td colspan="8"><x-empty-state icon="bi bi-ticket-perforated" message="Belum ada voucher." /></td></tr>
             @endforelse
             </tbody>
         </table>

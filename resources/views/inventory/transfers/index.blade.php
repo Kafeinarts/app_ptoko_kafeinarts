@@ -43,7 +43,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="8"><div class="empty-state"><i class="bi bi-arrow-left-right"></i>Belum ada transfer stok.</div></td></tr>
+                <tr><td colspan="8"><x-empty-state icon="bi bi-arrow-left-right" message="Belum ada transfer stok." /></td></tr>
             @endforelse
             </tbody>
         </table>

@@ -122,7 +122,7 @@
                         @endforeach
                     </div>
                 @else
-                    <div class="empty-state"><i class="bi bi-credit-card"></i>Belum ada pembayaran.</div>
+                    <x-empty-state icon="bi bi-credit-card" message="Belum ada pembayaran." />
                 @endif
             </div>
         </div>
@@ -147,7 +147,7 @@
                             <td class="text-end small fw-semibold">{{ \App\Helpers\CurrencyHelper::format($category['revenue']) }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="3"><div class="empty-state py-3"><i class="bi bi-tags"></i>Belum ada penjualan.</div></td></tr>
+                        <tr><td colspan="3"><x-empty-state icon="bi bi-tags" message="Belum ada penjualan." class="py-3" /></td></tr>
                     @endforelse
                     </tbody>
                 </table>
@@ -179,7 +179,7 @@
                         ]) }}"></canvas>
                     </div>
                 @else
-                    <div class="empty-state"><i class="bi bi-bar-chart"></i>Belum ada produk terjual.</div>
+                    <x-empty-state icon="bi bi-bar-chart" message="Belum ada produk terjual." />
                 @endif
             </div>
         </div>
@@ -209,7 +209,7 @@
                     <td class="text-end small {{ $product['margin'] < 0 ? 'text-danger' : 'text-success' }}">{{ \App\Helpers\CurrencyHelper::format($product['margin']) }}</td>
                 </tr>
             @empty
-                <tr><td colspan="7"><div class="empty-state"><i class="bi bi-graph-up"></i>Belum ada data penjualan pada periode ini.</div></td></tr>
+                <tr><td colspan="7"><x-empty-state icon="bi bi-graph-up" message="Belum ada data penjualan pada periode ini." /></td></tr>
             @endforelse
             </tbody>
         </table>
