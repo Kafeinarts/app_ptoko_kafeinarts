@@ -1,28 +1,419 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#1b4332">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#1b4332" />
     <title>Offline · Kafeinarts POS</title>
+    <!-- Pastikan three.js ikut di-cache pada Service Worker Anda -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        *{box-sizing:border-box}
-        body{margin:0;min-height:100vh;display:grid;place-items:center;background:linear-gradient(150deg,#123327,#1b4332 55%,#2d6a4f);color:#fff;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;padding:24px}
-        .card{max-width:460px;text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:24px;padding:42px 32px;backdrop-filter:blur(14px);box-shadow:0 25px 60px rgba(0,0,0,.25)}
-        .icon{width:86px;height:86px;border-radius:50%;background:rgba(250,237,205,.16);display:grid;place-items:center;margin:0 auto 22px;font-size:38px}
-        h1{font-size:1.6rem;margin:0 0 10px}
-        p{color:rgba(255,255,255,.72);line-height:1.6;margin:0 0 26px}
-        button{border:0;background:#faedcd;color:#1b4332;font-weight:700;padding:14px 26px;border-radius:999px;font-size:1rem;cursor:pointer}
-        small{display:block;margin-top:20px;color:rgba(255,255,255,.45)}
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            margin: 0;
+            overflow: hidden; /* Mencegah scroll saat main game */
+            background-color: #123327;
+            color: #fff;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+        
+        /* 3D Canvas Background */
+        #game-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        /* UI Overlay Layer */
+        .ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            padding: 24px;
+            pointer-events: none; /* Biarkan klik tembus ke game saat bermain */
+        }
+
+        .card {
+            max-width: 460px;
+            text-align: center;
+            background: rgba(18, 51, 39, 0.65);
+            border: 1px solid rgba(250, 237, 205, 0.2);
+            border-radius: 24px;
+            padding: 42px 32px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            pointer-events: auto; /* Kembalikan pointer events untuk card */
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .card.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.9);
+        }
+
+        .icon {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: rgba(250, 237, 205, 0.16);
+            display: grid;
+            place-items: center;
+            margin: 0 auto 22px;
+            color: #faedcd;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            margin: 0 0 10px;
+            color: #faedcd;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+            margin: 0 0 26px;
+            font-size: 0.95rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: 0;
+            font-weight: 700;
+            padding: 14px 26px;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: transform 0.1s, filter 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .btn-primary {
+            background: #faedcd;
+            color: #1b4332;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        small {
+            display: block;
+            margin-top: 24px;
+            color: rgba(250, 237, 205, 0.5);
+            letter-spacing: 0.5px;
+        }
+
+        /* Game HUD */
+        #game-hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 5;
+        }
+        
+        .hud-text {
+            background: rgba(27, 67, 50, 0.8);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: bold;
+            color: #faedcd;
+            border: 1px solid rgba(250, 237, 205, 0.2);
+        }
+
+        #btn-exit-game {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/></svg></div>
-        <h1>Anda sedang offline</h1>
-        <p>Koneksi internet terputus. Halaman yang pernah dibuka tetap bisa diakses, dan transaksi POS akan diantrekan untuk dikirim otomatis saat online kembali.</p>
-        <button onclick="location.href='/pos'">Coba Buka Kasir</button>
-        <small>Kafeinarts POS · PWA Mode</small>
+
+    <!-- 3D Layer -->
+    <div id="game-canvas"></div>
+
+    <!-- Game HUD -->
+    <div id="game-hud">
+        <div class="hud-text">Skor: <span id="score">0</span></div>
+        <div class="hud-text">Nyawa: <span id="lives">3</span></div>
     </div>
+    <button id="btn-exit-game" class="btn-secondary" onclick="stopGame()">Berhenti Bermain</button>
+
+    <!-- UI Overlay -->
+    <div class="ui-layer">
+        <div class="card" id="main-card">
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                </svg>
+            </div>
+            <h1>Anda sedang offline</h1>
+            <p>
+                Koneksi internet terputus. Halaman yang pernah dibuka tetap bisa
+                diakses, dan transaksi POS akan diantrekan untuk dikirim
+                otomatis saat online kembali.
+            </p>
+            <div class="btn-group">
+                <button class="btn-primary" onclick="location.href = '/pos'">Coba Buka Kasir</button>
+                <button class="btn-secondary" onclick="startGame()">Main Mini Game</button>
+            </div>
+            <small>Kafeinarts POS · PWA Mode</small>
+        </div>
+    </div>
+
+    <!-- Three.js Game Logic -->
+    <script>
+        let scene, camera, renderer;
+        let tray, cups = [];
+        let gameActive = false;
+        let score = 0;
+        let lives = 3;
+        let spawnRate = 60; 
+        let frameCount = 0;
+        let animationId;
+
+        // Colors
+        const COLOR_BG = 0x123327;
+        const COLOR_TRAY = 0x2d6a4f;
+        const COLOR_CUP = 0xd4a373;
+        const COLOR_COFFEE = 0x3e2723;
+
+        function init3D() {
+            const container = document.getElementById('game-canvas');
+            
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(COLOR_BG);
+            scene.fog = new THREE.Fog(COLOR_BG, 10, 50);
+
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 5, 15);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirLight.position.set(10, 20, 10);
+            scene.add(dirLight);
+
+            // Environment (Cafe Floor)
+            const floorGeo = new THREE.PlaneGeometry(100, 100);
+            const floorMat = new THREE.MeshStandardMaterial({ 
+                color: 0x1b4332,
+                roughness: 0.8
+            });
+            const floor = new THREE.Mesh(floorGeo, floorMat);
+            floor.rotation.x = -Math.PI / 2;
+            floor.position.y = -5;
+            scene.add(floor);
+
+            // Player Tray
+            const trayGeo = new THREE.BoxGeometry(4, 0.5, 3);
+            const trayMat = new THREE.MeshStandardMaterial({ color: COLOR_TRAY });
+            tray = new THREE.Mesh(trayGeo, trayMat);
+            tray.position.y = -3;
+            scene.add(tray);
+
+            // Controls (Mouse & Touch)
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('touchmove', onMove, { passive: false });
+            window.addEventListener('resize', onWindowResize);
+
+            // Mulai idle animation
+            animate();
+        }
+
+        function onMove(event) {
+            if (!gameActive) return;
+            
+            let clientX = event.clientX;
+            if (event.touches && event.touches.length > 0) {
+                clientX = event.touches[0].clientX;
+                event.preventDefault(); // Hindari scroll saat sentuh
+            }
+
+            // Map screen X to 3D world X
+            const x = (clientX / window.innerWidth) * 2 - 1;
+            const targetX = x * 12; // Rentang pergerakan nampan
+            
+            // Smooth movement
+            tray.position.x += (targetX - tray.position.x) * 0.2;
+            
+            // Tilt effect
+            tray.rotation.z = (tray.position.x - targetX) * 0.1;
+            tray.rotation.x = 0.2; // Sedikit miring ke depan
+        }
+
+        function spawnCup() {
+            const cupGroup = new THREE.Group();
+
+            // Gelas
+            const cupGeo = new THREE.CylinderGeometry(0.6, 0.4, 1.2, 16);
+            const cupMat = new THREE.MeshStandardMaterial({ color: COLOR_CUP });
+            const cupMesh = new THREE.Mesh(cupGeo, cupMat);
+            
+            // Kopi di dalam
+            const coffeeGeo = new THREE.CylinderGeometry(0.55, 0.55, 1.21, 16);
+            const coffeeMat = new THREE.MeshBasicMaterial({ color: COLOR_COFFEE });
+            const coffeeMesh = new THREE.Mesh(coffeeGeo, coffeeMat);
+
+            cupGroup.add(cupMesh);
+            cupGroup.add(coffeeMesh);
+
+            // Posisi acak di atas
+            cupGroup.position.set((Math.random() - 0.5) * 20, 15, 0);
+            
+            // Tambahkan rotasi acak
+            cupGroup.userData = {
+                rotX: Math.random() * 0.05,
+                rotY: Math.random() * 0.05,
+                speed: 0.1 + (Math.random() * 0.05) + (score * 0.005) // Makin lama makin cepat
+            };
+
+            scene.add(cupGroup);
+            cups.push(cupGroup);
+        }
+
+        function startGame() {
+            document.getElementById('main-card').classList.add('hidden');
+            document.getElementById('game-hud').style.opacity = '1';
+            
+            const btnExit = document.getElementById('btn-exit-game');
+            btnExit.style.opacity = '1';
+            btnExit.style.pointerEvents = 'auto';
+
+            score = 0;
+            lives = 3;
+            updateHUD();
+            
+            // Bersihkan gelas sisa
+            cups.forEach(cup => scene.remove(cup));
+            cups = [];
+            
+            gameActive = true;
+        }
+
+        function stopGame() {
+            gameActive = false;
+            document.getElementById('main-card').classList.remove('hidden');
+            document.getElementById('game-hud').style.opacity = '0';
+            
+            const btnExit = document.getElementById('btn-exit-game');
+            btnExit.style.opacity = '0';
+            btnExit.style.pointerEvents = 'none';
+
+            // Reset tray posisi
+            tray.position.x = 0;
+            tray.rotation.set(0,0,0);
+        }
+
+        function updateHUD() {
+            document.getElementById('score').innerText = score;
+            document.getElementById('lives').innerText = lives;
+            
+            if (lives <= 0) {
+                alert(`Game Over! Total kopi yang diselamatkan: ${score}\n\nSekarang Coba Refresh Browsernya!`);
+                stopGame();
+            }
+        }
+
+        function animate() {
+            animationId = requestAnimationFrame(animate);
+
+            // Idle animation untuk tray jika game belum mulai
+            if (!gameActive) {
+                tray.rotation.y += 0.01;
+                tray.position.y = -3 + Math.sin(Date.now() * 0.002) * 0.5;
+            } else {
+                tray.rotation.y = 0;
+                tray.position.y = -3;
+                
+                // Logika Game
+                frameCount++;
+                if (frameCount % Math.max(20, spawnRate - Math.floor(score/5)) === 0) {
+                    spawnCup();
+                }
+
+                for (let i = cups.length - 1; i >= 0; i--) {
+                    let cup = cups[i];
+                    cup.position.y -= cup.userData.speed;
+                    cup.rotation.x += cup.userData.rotX;
+                    cup.rotation.y += cup.userData.rotY;
+
+                    // Deteksi tabrakan
+                    if (cup.position.y < tray.position.y + 1 && cup.position.y > tray.position.y - 1) {
+                        if (Math.abs(cup.position.x - tray.position.x) < 2.5) {
+                            // Tangkap!
+                            scene.remove(cup);
+                            cups.splice(i, 1);
+                            score += 10;
+                            updateHUD();
+                            continue;
+                        }
+                    }
+
+                    // Jatuh ke lantai
+                    if (cup.position.y < -6) {
+                        scene.remove(cup);
+                        cups.splice(i, 1);
+                        lives--;
+                        updateHUD();
+                    }
+                }
+            }
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // Jalankan inisialisasi
+        init3D();
+    </script>
 </body>
 </html>

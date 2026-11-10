@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Product;
+use Illuminate\Support\Enumerable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -10,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class ProductsExport implements FromCollection, ShouldAutoSize, WithHeadings, WithMapping
 {
-    public function collection()
+    public function collection(): Enumerable
     {
         return Product::query()->with(['category', 'brand', 'unit', 'variants.prices', 'variants.stocks'])->get();
     }
