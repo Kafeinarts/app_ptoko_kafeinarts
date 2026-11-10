@@ -73,6 +73,9 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.categories')->group(function () {
+            Route::get('categories/export', [CategoryController::class, 'export'])->name('categories.export');
+            Route::get('categories/template', [CategoryController::class, 'template'])->name('categories.template');
+            Route::post('categories/import', [CategoryController::class, 'import'])->name('categories.import');
             Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
             Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
             Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
@@ -80,6 +83,9 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.brands')->group(function () {
+            Route::get('brands/export', [BrandController::class, 'export'])->name('brands.export');
+            Route::get('brands/template', [BrandController::class, 'template'])->name('brands.template');
+            Route::post('brands/import', [BrandController::class, 'import'])->name('brands.import');
             Route::get('brands', [BrandController::class, 'index'])->name('brands.index');
             Route::post('brands', [BrandController::class, 'store'])->name('brands.store');
             Route::put('brands/{id}', [BrandController::class, 'update'])->name('brands.update');
@@ -87,6 +93,9 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.units')->group(function () {
+            Route::get('units/export', [UnitController::class, 'export'])->name('units.export');
+            Route::get('units/template', [UnitController::class, 'template'])->name('units.template');
+            Route::post('units/import', [UnitController::class, 'import'])->name('units.import');
             Route::get('units', [UnitController::class, 'index'])->name('units.index');
             Route::post('units', [UnitController::class, 'store'])->name('units.store');
             Route::put('units/{id}', [UnitController::class, 'update'])->name('units.update');
@@ -94,6 +103,9 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.customers')->group(function () {
+            Route::get('customers/export', [CustomerController::class, 'export'])->name('customers.export');
+            Route::get('customers/template', [CustomerController::class, 'template'])->name('customers.template');
+            Route::post('customers/import', [CustomerController::class, 'import'])->name('customers.import');
             Route::get('customers', [CustomerController::class, 'index'])->name('customers.index');
             Route::post('customers', [CustomerController::class, 'store'])->name('customers.store');
             Route::put('customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
@@ -101,6 +113,9 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.suppliers')->group(function () {
+            Route::get('suppliers/export', [SupplierController::class, 'export'])->name('suppliers.export');
+            Route::get('suppliers/template', [SupplierController::class, 'template'])->name('suppliers.template');
+            Route::post('suppliers/import', [SupplierController::class, 'import'])->name('suppliers.import');
             Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
             Route::post('suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
             Route::put('suppliers/{id}', [SupplierController::class, 'update'])->name('suppliers.update');
@@ -108,6 +123,9 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('permission:master.modifiers')->group(function () {
+            Route::get('modifiers/export', [ModifierController::class, 'export'])->name('modifiers.export');
+            Route::get('modifiers/template', [ModifierController::class, 'template'])->name('modifiers.template');
+            Route::post('modifiers/import', [ModifierController::class, 'import'])->name('modifiers.import');
             Route::get('modifiers', [ModifierController::class, 'index'])->name('modifiers.index');
             Route::post('modifiers/groups', [ModifierController::class, 'storeGroup'])->name('modifiers.groups.store');
             Route::put('modifiers/groups/{group}', [ModifierController::class, 'updateGroup'])->name('modifiers.groups.update');

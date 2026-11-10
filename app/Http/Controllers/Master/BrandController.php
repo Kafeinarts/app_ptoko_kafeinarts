@@ -21,4 +21,9 @@ class BrandController extends SimpleCrudController
     protected array $fields = [
         ['name' => 'name', 'label' => 'Nama Brand', 'type' => 'text', 'required' => true],
     ];
+
+    protected function templateRows(): array
+    {
+        return [['Kafeinarts'], ['Local Beans']];
+    }
 }

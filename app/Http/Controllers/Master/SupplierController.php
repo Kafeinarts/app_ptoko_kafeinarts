@@ -48,4 +48,44 @@ class SupplierController extends SimpleCrudController
             'address' => ['nullable', 'string', 'max:500'],
         ];
     }
+
+    protected function exportHeadings(): array
+    {
+        return ['name', 'phone', 'email', 'address'];
+    }
+
+    protected function exportRow(Model $record): array
+    {
+        return [$record->name, $record->phone, $record->email, $record->address];
+    }
+
+    protected function templateRows(): array
+    {
+        return [
+            ['CV Sumber Kopi Nusantara', '081111222333', 'supplier@sumberkopi.test', 'Jl. Raya Bogor No. 101'],
+            ['Toko Bahan Kue Jaya', '081111222335', null, 'Pasar Santa Blok A-12'],
+        ];
+    }
+
+    protected function importRules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:100'],
+            'phone' => ['required', 'string', 'max:20'],
+            'email' => ['nullable', 'email', 'max:100'],
+            'address' => ['nullable', 'string', 'max:500'],
+        ];
+    }
+
+    protected function importRow(array $row): void
+    {
+        Supplier::query()->updateOrCreate(
+            ['phone' => trim((string) $row['phone'])],
+            [
+                'name' => trim((string) $row['name']),
+                'email' => isset($row['email']) && $row['email'] !== '' ? trim((string) $row['email']) : null,
+                'address' => isset($row['address']) && $row['address'] !== '' ? trim((string) $row['address']) : null,
+            ],
+        );
+    }
 }

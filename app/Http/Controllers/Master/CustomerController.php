@@ -60,4 +60,56 @@ class CustomerController extends SimpleCrudController
     {
         $data['loyalty_points'] = (int) ($data['loyalty_points'] ?? 0);
     }
+
+    protected function exportHeadings(): array
+    {
+        return ['name', 'phone', 'email', 'customer_group', 'loyalty_points'];
+    }
+
+    protected function exportRow(Model $record): array
+    {
+        return [
+            $record->name,
+            $record->phone,
+            $record->email,
+            $record->group?->name,
+            (int) $record->loyalty_points,
+        ];
+    }
+
+    protected function templateRows(): array
+    {
+        return [
+            ['Budi Santoso', '081200000001', 'budi@example.com', 'Member', 150],
+            ['Sari Dewi', '081200000002', 'sari@example.com', 'VIP', 320],
+        ];
+    }
+
+    protected function importRules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:100'],
+            'phone' => ['required', 'string', 'max:20'],
+            'email' => ['nullable', 'email', 'max:100'],
+            'customer_group' => ['nullable', 'string', 'max:50'],
+            'loyalty_points' => ['nullable', 'integer', 'min:0'],
+        ];
+    }
+
+    protected function importRow(array $row): void
+    {
+        $group = ! empty($row['customer_group'])
+            ? CustomerGroup::query()->firstOrCreate(['name' => trim((string) $row['customer_group'])])
+            : null;
+
+        Customer::query()->updateOrCreate(
+            ['phone' => trim((string) $row['phone'])],
+            [
+                'name' => trim((string) $row['name']),
+                'email' => isset($row['email']) && $row['email'] !== '' ? trim((string) $row['email']) : null,
+                'customer_group_id' => $group?->id,
+                'loyalty_points' => (int) ($row['loyalty_points'] ?? 0),
+            ],
+        );
+    }
 }

@@ -30,6 +30,7 @@
                         <li class="mb-1"><i class="bi bi-geo-alt me-1"></i>{{ $outlet->address ?: 'Alamat belum diisi' }}</li>
                         <li class="mb-1"><i class="bi bi-telephone me-1"></i>{{ $outlet->phone ?: '—' }}</li>
                         <li class="mb-1"><i class="bi bi-envelope me-1"></i>{{ $outlet->email ?: '—' }}</li>
+                        <li class="mb-1"><i class="bi bi-person-badge me-1"></i>PJ: <span class="fw-semibold text-body-emphasis">{{ $outlet->manager?->name ?? 'Belum ditunjuk' }}</span></li>
                         <li><i class="bi bi-people me-1"></i>{{ $outlet->users_count }} pengguna</li>
                     </ul>
                     <div class="d-flex gap-2">
@@ -63,7 +64,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                @include('setting._outlet-fields', ['outlet' => null])
+                @include('setting._outlet-fields', ['outlet' => null, 'managers' => $managers])
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
@@ -84,7 +85,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    @include('setting._outlet-fields', ['outlet' => $outlet])
+                    @include('setting._outlet-fields', ['outlet' => $outlet, 'managers' => $managers])
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>

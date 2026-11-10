@@ -17,6 +17,18 @@
         <input type="email" name="email" id="outlet-email-{{ $outlet?->id ?? 'create' }}" class="form-control" value="{{ old('email', $outlet?->email) }}">
     </div>
     <div class="col-12">
+        <label class="form-label" for="outlet-manager-{{ $outlet?->id ?? 'create' }}">Penanggung Jawab (PJ)</label>
+        <select name="manager_id" id="outlet-manager-{{ $outlet?->id ?? 'create' }}" class="form-select">
+            <option value="">— Belum ditunjuk —</option>
+            @foreach($managers as $manager)
+                <option value="{{ $manager->id }}" @selected((string) old('manager_id', $outlet?->manager_id) === (string) $manager->id)>
+                    {{ $manager->name }}{{ $manager->role ? ' — '.$manager->role->name : '' }}
+                </option>
+            @endforeach
+        </select>
+        <div class="form-text">PJ adalah pengguna yang bertanggung jawab atas operasional outlet ini.</div>
+    </div>
+    <div class="col-12">
         <label class="form-label" for="outlet-address-{{ $outlet?->id ?? 'create' }}">Alamat</label>
         <textarea name="address" id="outlet-address-{{ $outlet?->id ?? 'create' }}" class="form-control" rows="2">{{ old('address', $outlet?->address) }}</textarea>
     </div>

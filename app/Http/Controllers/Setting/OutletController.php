@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\Outlet;
+use App\Models\User;
 use App\Support\OutletContext;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -13,9 +14,10 @@ class OutletController extends Controller
 {
     public function index()
     {
-        $outlets = Outlet::query()->withCount('users')->orderBy('name')->get();
+        $outlets = Outlet::query()->with('manager')->withCount('users')->orderBy('name')->get();
+        $managers = User::query()->where('is_active', true)->with('role')->orderBy('name')->get();
 
-        return view('setting.outlets', compact('outlets'));
+        return view('setting.outlets', compact('outlets', 'managers'));
     }
 
     public function store(Request $request)
@@ -27,6 +29,7 @@ class OutletController extends Controller
             'email' => ['nullable', 'email', 'max:100'],
             'address' => ['nullable', 'string', 'max:500'],
             'receipt_footer' => ['nullable', 'string', 'max:255'],
+            'manager_id' => ['nullable', 'exists:users,id'],
         ]);
 
         try {
@@ -48,6 +51,7 @@ class OutletController extends Controller
             'email' => ['nullable', 'email', 'max:100'],
             'address' => ['nullable', 'string', 'max:500'],
             'receipt_footer' => ['nullable', 'string', 'max:255'],
+            'manager_id' => ['nullable', 'exists:users,id'],
         ]);
 
         try {

@@ -577,7 +577,7 @@
             const url = new URL(link.href, window.location.origin);
             if (url.origin !== window.location.origin) return;
             if (!url.pathname.startsWith(new URL(App.base).pathname)) return;
-            if (url.pathname.includes('/receipt') || url.pathname.includes('/pdf') || url.pathname.includes('/excel') || url.pathname.includes('/template')) return;
+            if (url.pathname.includes('/receipt') || url.pathname.includes('/pdf') || url.pathname.includes('/excel') || url.pathname.includes('/template') || url.pathname.includes('/export')) return;
             if (link.closest('form') || link.dataset.lteToggle) return;
             event.preventDefault();
             loadPage(url.href);

@@ -44,7 +44,7 @@ class ProductionSeeder extends Seeder
             ],
         );
 
-        User::query()->firstOrCreate(
+        $admin = User::query()->firstOrCreate(
             ['email' => env('ADMIN_EMAIL', 'admin@example.com')],
             [
                 'name' => env('ADMIN_NAME', 'Administrator'),
@@ -55,6 +55,10 @@ class ProductionSeeder extends Seeder
                 'is_active' => true,
             ],
         );
+
+        if (! $outlet->manager_id) {
+            $outlet->update(['manager_id' => $admin->id]);
+        }
 
         foreach ([['Cup', 'cup'], ['Pcs', 'pcs'], ['Porsi', 'porsi'], ['Pack', 'pack'], ['Kg', 'kg'], ['Gr', 'gr'], ['Botol', 'btl']] as [$name, $short]) {
             Unit::query()->firstOrCreate(['short_name' => $short], ['name' => $name]);

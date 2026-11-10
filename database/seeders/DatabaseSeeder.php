@@ -112,6 +112,19 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
+        $managerBranch = User::query()->create([
+            'outlet_id' => $outletBranch->id,
+            'role_id' => $manager->id,
+            'name' => 'Manajer Dago',
+            'email' => 'manager.dago@kafeinarts.test',
+            'phone' => '081200000104',
+            'password' => Hash::make('password'),
+            'is_active' => true,
+        ]);
+
+        $outletHQ->update(['manager_id' => $managerUser->id]);
+        $outletBranch->update(['manager_id' => $managerBranch->id]);
+
         // ------------------------------------------------------------------
         // Categories, Brands, Units
         // ------------------------------------------------------------------

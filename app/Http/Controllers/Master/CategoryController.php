@@ -38,6 +38,40 @@ class CategoryController extends SimpleCrudController
         ];
     }
 
+    protected function exportHeadings(): array
+    {
+        return ['name', 'is_active'];
+    }
+
+    protected function exportRow(Model $record): array
+    {
+        return [$record->name, $record->is_active ? 1 : 0];
+    }
+
+    protected function templateRows(): array
+    {
+        return [['Kopi', 1], ['Makanan', 1]];
+    }
+
+    protected function importRules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:100'],
+            'is_active' => ['nullable', 'boolean'],
+        ];
+    }
+
+    protected function importRow(array $row): void
+    {
+        $name = trim((string) $row['name']);
+        $record = Category::query()->firstOrNew(['name' => $name]);
+        if (! $record->exists) {
+            $record->slug = Str::slug($name).'-'.Str::lower(Str::random(4));
+        }
+        $record->is_active = array_key_exists('is_active', $row) ? (bool) $row['is_active'] : true;
+        $record->save();
+    }
+
     protected function beforeSave(array &$data, ?Model $record = null): void
     {
         $data['slug'] = Str::slug($data['name']).($record ? '-'.Str::lower(Str::random(3)) : '');

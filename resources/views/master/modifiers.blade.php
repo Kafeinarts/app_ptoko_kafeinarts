@@ -6,6 +6,15 @@
 @section('page-key', 'modifiers')
 
 @section('page-actions')
+    <a href="{{ route('master.modifiers.template') }}" class="btn btn-sm btn-outline-secondary" data-no-spa title="Unduh template import Excel">
+        <i class="bi bi-download me-1"></i>Template
+    </a>
+    <a href="{{ route('master.modifiers.export') }}" class="btn btn-sm btn-outline-success" data-no-spa title="Export seluruh modifier ke Excel">
+        <i class="bi bi-file-earmark-excel me-1"></i>Export
+    </a>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#import-modifier">
+        <i class="bi bi-upload me-1"></i>Import
+    </button>
     <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#create-group"><i class="bi bi-plus-lg me-1"></i>Tambah Grup</button>
 @endsection
 
@@ -105,6 +114,30 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
                 <button class="btn btn-success"><i class="bi bi-check2 me-1"></i>Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="import-modifier" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form method="POST" action="{{ route('master.modifiers.import') }}" enctype="multipart/form-data" class="modal-content border-0">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title">Import Modifier</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <label class="form-label" for="modifier-import-file">File Excel (.xlsx, .xls, .csv)</label>
+                <input type="file" name="file" id="modifier-import-file" class="form-control" accept=".xlsx,.xls,.csv" required>
+                <div class="form-text">
+                    1 baris = 1 modifier. Grup dibuat otomatis jika belum ada.
+                    <a href="{{ route('master.modifiers.template') }}" data-no-spa>Unduh template import</a>. Maksimal 5 MB.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                <button class="btn btn-success"><i class="bi bi-upload me-1"></i>Import Data</button>
             </div>
         </form>
     </div>

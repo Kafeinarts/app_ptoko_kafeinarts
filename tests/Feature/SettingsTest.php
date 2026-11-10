@@ -90,6 +90,33 @@ class SettingsTest extends TestCase
         );
     }
 
+    public function test_admin_can_register_outlet_with_pj(): void
+    {
+        $admin = $this->actingAsSeeded();
+        $manager = User::query()->where('email', 'manager@kafeinarts.test')->firstOrFail();
+
+        $this->post(route('settings.outlets.store'), [
+            'code' => 'KFT-PJ',
+            'name' => 'Outlet PJ Test',
+            'manager_id' => $manager->id,
+            'is_active' => 1,
+        ])->assertSessionHas('swal_success');
+
+        $this->assertDatabaseHas('outlets', ['code' => 'KFT-PJ', 'manager_id' => $manager->id]);
+
+        $outlet = Outlet::query()->where('code', 'KFT-PJ')->firstOrFail();
+
+        // Ganti PJ ke admin.
+        $this->put(route('settings.outlets.update', $outlet), [
+            'code' => 'KFT-PJ',
+            'name' => 'Outlet PJ Test',
+            'manager_id' => $admin->id,
+            'is_active' => 1,
+        ])->assertSessionHas('swal_success');
+
+        $this->assertDatabaseHas('outlets', ['code' => 'KFT-PJ', 'manager_id' => $admin->id]);
+    }
+
     public function test_admin_can_create_and_deactivate_outlet(): void
     {
         $this->actingAsSeeded();

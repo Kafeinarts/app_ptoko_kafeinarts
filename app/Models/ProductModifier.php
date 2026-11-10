@@ -9,6 +9,14 @@ class ProductModifier extends Model
 {
     protected $guarded = [];
 
+    protected function casts(): array
+    {
+        return [
+            'price' => 'decimal:2',
+            'is_available' => 'boolean',
+        ];
+    }
+
     public function group(): BelongsTo
     {
         return $this->belongsTo(ProductModifierGroup::class, 'modifier_group_id');

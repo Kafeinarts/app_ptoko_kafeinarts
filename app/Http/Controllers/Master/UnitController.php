@@ -24,6 +24,38 @@ class UnitController extends SimpleCrudController
         ['name' => 'short_name', 'label' => 'Singkatan', 'type' => 'text', 'required' => true],
     ];
 
+    protected function exportHeadings(): array
+    {
+        return ['name', 'short_name'];
+    }
+
+    protected function exportRow(Model $record): array
+    {
+        return [$record->name, $record->short_name];
+    }
+
+    protected function templateRows(): array
+    {
+        return [['Cup', 'cup'], ['Pcs', 'pcs']];
+    }
+
+    protected function importRules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:50'],
+            'short_name' => ['required', 'string', 'max:10'],
+        ];
+    }
+
+    protected function importRow(array $row): void
+    {
+        $shortName = trim((string) $row['short_name']);
+        Unit::query()->updateOrCreate(
+            ['short_name' => $shortName],
+            ['name' => trim((string) $row['name'])],
+        );
+    }
+
     protected function rules(?Model $record = null): array
     {
         return [
